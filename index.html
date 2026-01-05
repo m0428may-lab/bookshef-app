@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>書籍アプリ（本棚）</title>
+  <link rel="stylesheet" href="style.css" />
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#f3f1eb">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+</head>
+<body>
+
+  <header class="top">
+    <h1 class="appTitle">書籍アプリ（本棚）</h1>
+
+    <div class="form">
+      <input id="bookInput" type="text" placeholder="例：ワンピース 113 / 鬼滅の刃 1巻 / 978...(ISBN)" />
+      <button id="addBtn" type="button">登録</button>
+      <button id="scanBtn" type="button">ISBNスキャン</button>
+    </div>
+
+    <div class="hint">
+      ・本棚は「タイトル（シリーズ）」だけ表示。押すと巻一覧に入ります。<br>
+      ・表紙は自動取得（Google Books）。ISBNだと精度UP。
+    </div>
+  </header>
+
+  <!-- シリーズ一覧（本棚） -->
+  <main>
+    <div id="seriesShelf" class="seriesShelf"></div>
+  </main>
+
+  <!-- シリーズの中（巻一覧） -->
+  <div id="seriesModal" class="modal hidden" aria-hidden="true">
+    <div class="modalContent" role="dialog" aria-modal="true">
+      <button id="closeSeries" class="close" type="button" aria-label="閉じる">×</button>
+      <div id="seriesBody"></div>
+    </div>
+  </div>
+
+  <!-- 巻の詳細（表紙） -->
+  <div id="modal" class="modal hidden" aria-hidden="true">
+    <div class="modalContent" role="dialog" aria-modal="true">
+      <button id="closeModal" class="close" type="button" aria-label="閉じる">×</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- ISBNスキャン（カメラ） -->
+  <div id="scanModal" class="modal hidden" aria-hidden="true">
+    <div class="scanContent" role="dialog" aria-modal="true">
+      <button id="closeScan" class="close" type="button" aria-label="閉じる">×</button>
+      <div class="scanTitle">ISBNスキャン（EAN-13）</div>
+      <video id="video" autoplay playsinline></video>
+      <div id="scanStatus" class="scanStatus">カメラ起動中…</div>
+      <div class="hintSmall">※対応ブラウザのみ。無理ならISBNを手入力でOK。</div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("./service-worker.js");
+    });
+  }
+</script>
+
+</body>
+</html>

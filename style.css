@@ -1,0 +1,323 @@
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background:#2b1c12;
+  color:#fff;
+}
+
+.top{ padding: 18px 12px 10px; }
+.appTitle{
+  margin: 0 auto 12px;
+  width: min(980px, 94%);
+  font-size: 18px;
+  font-weight: 900;
+}
+.hint{
+  width: min(980px, 94%);
+  margin: 8px auto 0;
+  font-size: 12px;
+  opacity: .85;
+  line-height: 1.5;
+}
+.hintSmall{
+  margin-top: 10px;
+  font-size: 12px;
+  opacity: .8;
+}
+
+.form{
+  width: min(980px, 94%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 10px;
+}
+#bookInput{
+  padding: 12px;
+  border-radius: 8px; /* 角を控えめ */
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+}
+#addBtn, #scanBtn{
+  padding: 12px 16px;
+  border-radius: 8px; /* 角を控えめ */
+  border: none;
+  font-weight: 900;
+  cursor: pointer;
+}
+@media (max-width: 760px){
+  .form{ grid-template-columns: 1fr; }
+  #addBtn, #scanBtn{ width: 100%; }
+}
+
+/* ===== 本棚：シリーズだけ（落ち着いた白＋薄い柄） ===== */
+.seriesShelf{
+  width: min(980px, 94%);
+  margin: 18px auto 40px;
+  padding: 18px 14px;
+
+  /* 白みがかった単色＋うっすら柄 */
+  background:
+    repeating-linear-gradient(
+      45deg,
+      rgba(0,0,0,.02) 0px,
+      rgba(0,0,0,.02) 6px,
+      rgba(255,255,255,.0) 6px,
+      rgba(255,255,255,.0) 14px
+    ),
+    #f3f1eb;
+
+  border-radius: 6px;          /* 角は四角寄り */
+  box-shadow: 0 10px 26px rgba(0,0,0,.25);
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(86px, 1fr));
+  gap: 12px;
+}
+
+/* シリーズカード：落ち着いた色（強い原色はやめる） */
+.seriesCard{
+  height: 200px;
+  border-radius: 6px;  /* 四角寄り */
+  padding: 10px 8px;
+  box-sizing: border-box;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.16), rgba(0,0,0,.08)),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255,255,255,.10) 0px,
+      rgba(255,255,255,.10) 2px,
+      rgba(255,255,255,.0) 2px,
+      rgba(255,255,255,.0) 10px
+    ),
+    #6d6a62;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.25),
+    0 6px 14px rgba(0,0,0,.18);
+}
+
+.seriesTitle{
+  font-weight: 950;
+  font-size: 14px;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  height: 100%;
+  overflow: hidden;
+  color: rgba(255,255,255,.92);
+}
+
+.seriesBadge{
+  position:absolute;
+  top:8px;
+  right:8px;
+  font-size:11px;
+  opacity:.92;
+  color: rgba(255,255,255,.92);
+  background: rgba(0,0,0,.25);
+  padding: 4px 6px;
+  border-radius: 6px;
+}
+
+/* ===== モーダル共通 ===== */
+.modal{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.65);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 16px;
+}
+.hidden{ display:none; }
+
+.modalContent, .scanContent{
+  width: min(560px, 100%);
+  background:#fff;
+  color:#111;
+  border-radius: 10px; /* 四角寄り */
+  padding: 16px;
+  box-shadow: 0 14px 40px rgba(0,0,0,.45);
+  position: relative;
+}
+
+.close{
+  position:absolute;
+  top:10px;
+  right:10px;
+  width:36px;
+  height:36px;
+  border:none;
+  border-radius: 8px;
+  cursor:pointer;
+  font-size:18px;
+}
+
+/* ===== 巻一覧（サムネ付き） ===== */
+.seriesHeaderRow{
+  display:flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 6px 0 10px;
+}
+.seriesNameBig{
+  font-weight: 950;
+  font-size: 18px;
+}
+.seriesMetaSmall{
+  font-size: 12px;
+  opacity: .75;
+}
+
+.volGrid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.volTile{
+  border-radius: 8px;        /* 四角寄り */
+  border: 1px solid #e7e7e7;
+  background:#fff;
+  overflow: hidden;
+  cursor:pointer;
+  position: relative;
+  height: 132px;
+}
+
+.volTile.owned{
+  border-color:#111;
+}
+
+.volTile.missing{
+  opacity:.45;
+  border-style:dashed;
+  background: #fafafa;
+}
+
+/* サムネ */
+.volThumb{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display:block;
+  background:#f1f1f1;
+}
+
+/* 巻数ラベル */
+.volLabel{
+  position:absolute;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  background: rgba(255,255,255,.88);
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 8px;
+  padding: 6px 6px;
+  text-align:center;
+  font-weight: 950;
+  font-size: 12px;
+}
+
+/* ===== 巻の詳細（表紙） ===== */
+.coverImg{
+  width: 100%;
+  max-height: 360px;
+  object-fit: contain;
+  border-radius: 10px;
+  background:#f3f3f3;
+}
+
+.modalTitle{
+  font-size: 18px;
+  font-weight: 950;
+  margin: 12px 0 6px;
+}
+.modalMeta{
+  font-size: 13px;
+  opacity:.75;
+  margin-bottom: 10px;
+}
+
+.modalActions{
+  display:flex;
+  flex-wrap: wrap;
+  gap:10px;
+  margin-top: 12px;
+}
+.btn{
+  border: 1px solid #ddd;
+  background:#fff;
+  padding:10px 12px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:900;
+}
+.danger{
+  background:#e53935;
+  color:#fff;
+  border:none;
+  padding:10px 12px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:950;
+}
+
+/* ===== スライドアニメ（巻切替） ===== */
+#modalBody{ position: relative; }
+.slideOutLeft { animation: slideOutLeft .16s ease both; }
+.slideOutRight{ animation: slideOutRight .16s ease both; }
+.slideInLeft  { animation: slideInLeft  .18s ease both; }
+.slideInRight { animation: slideInRight .18s ease both; }
+@keyframes slideOutLeft { from{transform:translateX(0);opacity:1;} to{transform:translateX(-18px);opacity:0;} }
+@keyframes slideOutRight{ from{transform:translateX(0);opacity:1;} to{transform:translateX(18px);opacity:0;} }
+@keyframes slideInLeft  { from{transform:translateX(-18px);opacity:0;} to{transform:translateX(0);opacity:1;} }
+@keyframes slideInRight { from{transform:translateX(18px);opacity:0;} to{transform:translateX(0);opacity:1;} }
+
+/* ===== スキャン ===== */
+.scanTitle{ font-weight: 950; margin-bottom: 10px; }
+#video{
+  width: 100%;
+  border-radius: 10px;
+  background: #000;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+.scanStatus{
+  margin-top: 10px;
+  font-size: 13px;
+  opacity: .85;
+}
+/* ===== 長い一覧でもスクロールできるように ===== */
+.modalContent{
+  max-height: 90vh;
+  overflow: hidden;        /* 外側は固定 */
+  display: flex;
+  flex-direction: column;
+}
+
+#seriesBody, #modalBody{
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;           /* これが無いとスクロールが効かない事がある */
+}
+
+.volGrid{
+  flex: 1;
+  overflow-y: auto;        /* 巻一覧だけスクロール */
+  min-height: 0;
+  padding-right: 6px;      /* スクロールバーで見切れ防止 */
+}
+
+#modalBody{
+  overflow-y: auto;        /* 表紙詳細も長いときスクロール */
+  padding-right: 6px;
+}
